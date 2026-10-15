@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nocny pościg — wolna jazda</title><style>*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#111820;color:#fff;font-family:Arial,Helvetica,sans-serif}canvas{display:block;width:100vw;height:100vh}header{position:absolute;top:28px;left:32px;right:32px;display:flex;justify-content:space-between;align-items:flex-start}.brand{font-size:23px;font-weight:900;letter-spacing:2px}.brand span{color:#d9ff57}.brand small{display:block;font-size:9px;letter-spacing:3px;margin-top:9px;color:#9cabb1}button{border:1px solid #ffffff30;background:#172329d9;color:white;padding:12px 20px;border-radius:5px;cursor:pointer;font-weight:bold}button:hover{background:#364748}.wanted{position:absolute;top:110px;left:32px}.wanted small,.stats small{font-size:10px;letter-spacing:2px;color:#b4c2c7}#stars{font-size:34px;letter-spacing:7px;color:#d9ff57;margin:7px 0}.wanted p{font-size:12px;color:#c7d5d9}.track{height:4px;background:#ffffff20;overflow:hidden;border-radius:2px}.track i{display:block;height:100%;width:100%;background:#d9ff57}#escape{width:0;background:#64dddc}.speed{position:absolute;right:32px;bottom:65px;width:180px;text-align:right}#speed{font-size:85px;font-weight:800;font-style:italic;letter-spacing:-6px}.speed small{font-size:12px;color:#a4b1b5;margin-left:12px}.speed .track{margin:9px 0}.speed label{font-size:10px;letter-spacing:2px;color:#d9ff57}.stats{position:absolute;left:32px;bottom:65px;width:135px}.stats small,.stats strong{display:block}.stats strong{margin:7px 0 20px;font-size:20px}.stats .track{margin-top:10px}footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:1px;color:#e0e7e9}footer span{color:#899a9e}#overlay{position:absolute;inset:0;background:linear-gradient(90deg,#0a151df2,#0a151d80);display:flex;align-items:center;padding:8vw}.panel{max-width:520px}.panel>small{letter-spacing:4px;color:#d9ff57;font-size:11px}h1{font-size:clamp(40px,6vw,78px);letter-spacing:-3px;line-height:1.03;margin:24px 0}h1 em{font-style:normal;color:#d9ff57}.panel p{color:#aebfc7;line-height:1.8;font-size:15px;max-width:440px}.panel button{background:#d9ff57;color:#142014;border:none;margin:20px 0 10px;padding:19px 28px;letter-spacing:1px}.panel .hint{font-size:11px}#toast{position:absolute;top:30px;left:50%;transform:translateX(-50%);background:#d9ff57;color:#182020;padding:14px 24px;border-radius:4px;opacity:0;transition:opacity .3s;font-weight:bold;font-size:13px;pointer-events:none}@media(max-width:650px){header{left:16px;right:16px;top:16px}.wanted{left:16px;top:90px}.stats{left:16px}.speed{right:16px}footer{font-size:8px;padding:0 10px}.brand{font-size:18px}}
+
+[hidden]{display:none!important}
+body{overscroll-behavior:none;touch-action:none;height:100dvh}
+canvas{height:100dvh;outline:none}
+button{-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid #64dddc;outline-offset:3px}
+#controls{position:absolute;left:32px;right:32px;bottom:48px;display:flex;align-items:end;justify-content:space-between;gap:12px;pointer-events:none;user-select:none;-webkit-user-select:none}
+.steering,.pedals{display:flex;gap:8px;pointer-events:auto}
+#controls button{min-width:62px;height:62px;padding:10px;font-size:12px;border:1px solid #79949d70;background:#15232ee6;touch-action:none}
+#controls .steering button{font-size:24px}
+#controls .accelerator{background:#d9ff57;color:#142014;min-width:86px}
+#controls button.pressed{transform:translateY(2px);background:#64dddc;color:#12242b;box-shadow:0 0 15px #64dddc50}
+.drive-hint{font-size:11px;color:#c6d5da;align-self:center;text-align:center}
+.speed,.stats{bottom:145px}
+#pause-overlay{position:absolute;inset:0;display:grid;place-items:center;background:#08131dd9;z-index:5;padding:20px}
+.pause-card{text-align:center;background:#17272e;border:1px solid #ffffff20;border-radius:12px;padding:32px;max-width:400px}
+.pause-card h2{font-size:32px;margin-top:0}.pause-card p{color:#adbdc4;line-height:1.5}.pause-card button{background:#d9ff57;color:#142014}
+#toast{max-width:calc(100vw - 32px);text-align:center}
+#overlay{overflow:auto;z-index:6}noscript{position:fixed;inset:20px;background:#17272e;z-index:10;padding:30px}
+@media(max-width:700px){#controls{left:12px;right:12px;bottom:30px;gap:6px}#controls button{min-width:43px;height:58px;padding:6px;font-size:10px}#controls .accelerator{min-width:60px}.steering,.pedals{gap:5px}.drive-hint{display:none}.speed,.stats{bottom:115px}.speed{width:135px}#speed{font-size:56px}.stats strong{font-size:15px;margin:5px 0 12px}.stats{width:110px}footer{font-size:9px;bottom:7px;white-space:nowrap;overflow:hidden;text-align:left;padding:0 12px}.wanted{max-width:185px}#stars{font-size:27px;letter-spacing:4px}.brand small{letter-spacing:1px}#toast{top:65px;width:calc(100vw - 30px);font-size:11px;padding:10px}#overlay{padding:26px}.panel h1{font-size:48px}.panel p{font-size:13px}.panel button{margin-top:10px}.panel .hint{font-size:11px}}
+@media(max-height:500px){header{top:10px}.brand small{display:none}.wanted{top:55px}.wanted p{margin:3px 0}.wanted small{font-size:8px}#stars{margin:3px 0;font-size:25px}.stats{bottom:105px}.stats strong{margin:3px 0 5px;font-size:14px}.speed{bottom:105px}#speed{font-size:42px}#controls{bottom:26px}#controls button{height:50px}#overlay{padding:20px}.panel{max-width:600px}.panel h1{font-size:35px;margin:10px 0}.panel h1 br{display:none}.panel p{margin:8px 0;font-size:12px}.panel button{padding:12px 22px;margin:5px 0}.panel .hint{font-size:10px}}
+@media(max-width:360px){#controls button{min-width:38px;padding:4px}#controls .accelerator{min-width:54px}.steering,.pedals{gap:4px}}
+</style></head>
+<body><canvas id="game" tabindex="0" aria-label="Mapa miasta i samochody. Steruj WASD, strzałkami lub przyciskami na ekranie."></canvas>
+<header><div class="brand">NOCNY<span>POŚCIG</span><small>OTWARTE MIASTO / WOLNA JAZDA</small></div><button id="pause">Pauza ⏸</button></header>
+<aside class="wanted"><small>POZIOM POSZUKIWANIA</small><div id="stars">☆☆☆☆☆</div><p id="status">Miasto należy do ciebie</p><div class="track"><i id="escape"></i></div></aside>
+<section class="speed"><span id="speed">0</span><small>KM/H</small><div class="track"><i id="nitro"></i></div><label>NITRO / SHIFT</label></section>
+<aside class="stats"><small>DYSTANS</small><strong id="distance">0.00 km</strong><small>UCIECZKI</small><strong id="wins">0</strong><small>STAN AUTA</small><div class="track"><i id="health"></i></div></aside>
+<div id="controls" role="group" aria-label="Sterowanie samochodem" hidden>
+  <div class="steering">
+    <button type="button" data-drive="KeyA" aria-label="Skręć w lewo">◀</button>
+    <button type="button" data-drive="KeyD" aria-label="Skręć w prawo">▶</button>
+  </div>
+  <p class="drive-hint">Przytrzymaj GAZ, aby jechać</p>
+  <div class="pedals">
+    <button type="button" data-drive="ShiftLeft" aria-label="Nitro">NITRO</button>
+    <button type="button" data-drive="Space" aria-label="Hamulec">HAMUJ</button>
+    <button type="button" data-drive="KeyS" aria-label="Cofaj">COFAJ</button>
+    <button type="button" data-drive="KeyW" aria-label="Gaz" class="accelerator">GAZ ▲</button>
+  </div>
+</div>
+<footer>Przytrzymaj GAZ na ekranie lub W / ↑, aby jechać. A D / ← → <span>skręt</span> · SPACJA <span>hamulec</span> · SHIFT <span>nitro</span> · R <span>restart</span> · P <span>pauza</span></footer>
+<div id="overlay"><div class="panel"><small>ULICE CZEKAJĄ</small><h1>Twoje miasto.<br><em>Twój pościg.</em></h1><p>Jedź, gdzie chcesz. Przyspiesz na ulicach, a policja ruszy za tobą. Zniknij z jej zasięgu, by zgubić pościg.</p><button id="start" type="button">WYJEDŹ NA ULICE →</button><p class="hint">Przytrzymaj W / ↑ lub ekranowy GAZ, aby ruszyć.<br>WASD lub strzałki · Shift: nitro · Spacja: hamulec<br>Na telefonie użyj przycisków na ekranie.</p></div></div>
+<div id="pause-overlay" hidden><div class="pause-card"><h2>Pauza</h2><p>Jazda zatrzymuje się po opuszczeniu okna.</p><button id="resume" type="button">WRÓĆ DO JAZDY ▶</button></div></div>
+<noscript>Gra wymaga włączonej obsługi JavaScript. Otwórz plik HTML w przeglądarce Chrome, Firefox lub Edge.</noscript>
+<div id="toast" role="status"></div><script>'use strict';
+const canvas=document.querySelector('#game'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const WORLD=3600,GRID=450,ROAD=112,keys=new Set();
+const keyboardKeys=new Set(),pointerKeys=new Map();
+function syncKeys(){keys.clear();for(const key of keyboardKeys)keys.add(key);for(const key of pointerKeys.values())keys.add(key)}
+function clearInput(){keyboardKeys.clear();pointerKeys.clear();syncKeys();for(const button of document.querySelectorAll('[data-drive]'))button.classList.remove('pressed')}
+function focusGame(){canvas.focus({preventScroll:true})}
+let w=innerWidth,h=innerHeight,car,cops=[],heat=0,escapeTime=0,distance=0,wins=0,active=false,paused=false,last=0,spawn=0,noticeTimer;
+let seed=47;function random(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646}
+const buildings=[];for(let x=0;x<WORLD;x+=GRID)for(let y=0;y<WORLD;y+=GRID){for(let i=0;i<2;i++)for(let j=0;j<2;j++){buildings.push({x:x+85+i*155,y:y+85+j*155,w:125+random()*15,h:125+random()*15,color:['#25323b','#2b3940','#26353b','#304047'][Math.floor(random()*4)],park:random()<.16})}}
+function resize(){w=innerWidth;h=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=w*d;canvas.height=h*d;ctx.setTransform(d,0,0,d,0,0)}addEventListener('resize',resize);resize();
+function reset(){car={x:1800,y:1800,a:-Math.PI/2,v:0,hp:100,nitro:100};cops=[];heat=0;escapeTime=0;distance=0;wins=0;spawn=0}reset();
+function toast(t){$('toast').textContent=t;$('toast').style.opacity=1;clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>$('toast').style.opacity=0,3000)}
+function start(){clearInput();reset();active=true;paused=false;$('overlay').style.display='none';$('pause-overlay').hidden=true;$('controls').hidden=false;$('pause').textContent='Pauza ⏸';focusGame();toast('Przytrzymaj W / ↑ lub GAZ na ekranie, aby jechać')}
+$('start').onclick=start;
+function togglePause(){if(!active)return;paused=!paused;clearInput();$('pause').textContent=paused?'Wznów ▶':'Pauza ⏸';$('pause-overlay').hidden=!paused;if(paused)$('resume').focus({preventScroll:true});else focusGame()}
+$('pause').onclick=togglePause;$('resume').onclick=togglePause;
+const keyAliases={w:'KeyW',a:'KeyA',s:'KeyS',d:'KeyD',r:'KeyR',p:'KeyP',' ':'Space',Shift:'ShiftLeft',ArrowUp:'ArrowUp',ArrowDown:'ArrowDown',ArrowLeft:'ArrowLeft',ArrowRight:'ArrowRight'};
+function inputCode(event){return event.code&&event.code!=='Unidentified'?event.code:keyAliases[event.key]||keyAliases[event.key?.toLowerCase()]}
+const drivingKeys=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','ShiftLeft','ShiftRight']);
+addEventListener('keydown',event=>{const code=inputCode(event);if(active&&drivingKeys.has(code)){event.preventDefault();if(!paused){keyboardKeys.add(code);syncKeys()}}if(!event.repeat){if(code==='KeyR')start();if(code==='KeyP')togglePause()}});
+addEventListener('keyup',event=>{keyboardKeys.delete(inputCode(event));syncKeys()});
+for(const button of document.querySelectorAll('[data-drive]')){
+  button.addEventListener('pointerdown',event=>{if(!active||paused||(event.pointerType==='mouse'&&event.button!==0))return;event.preventDefault();button.setPointerCapture(event.pointerId);pointerKeys.set(event.pointerId,button.dataset.drive);button.classList.add('pressed');syncKeys();focusGame()});
+  const release=event=>{pointerKeys.delete(event.pointerId);if(![...pointerKeys.values()].includes(button.dataset.drive))button.classList.remove('pressed');syncKeys()};
+  button.addEventListener('pointerup',release);button.addEventListener('pointercancel',release);button.addEventListener('lostpointercapture',release);
+  button.addEventListener('contextmenu',event=>event.preventDefault());
+}
+canvas.addEventListener('pointerdown',focusGame);
+function suspend(){clearInput();if(active&&!paused)togglePause()}
+addEventListener('blur',suspend);document.addEventListener('visibilitychange',()=>{if(document.hidden)suspend()});
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function blocked(x,y){if(x<18||y<18||x>WORLD-18||y>WORLD-18)return true;return buildings.some(b=>!b.park&&x>b.x-13&&x<b.x+b.w+13&&y>b.y-13&&y<b.y+b.h+13)}
+function move(body,dt){const nx=body.x+Math.cos(body.a)*body.v*dt,ny=body.y+Math.sin(body.a)*body.v*dt;let hit=false;if(!blocked(nx,body.y))body.x=nx;else hit=true;if(!blocked(body.x,ny))body.y=ny;else hit=true;if(hit){if(body===car&&Math.abs(body.v)>65)car.hp-=Math.abs(body.v)*.013;body.v*=-.25}return hit}
+function addCop(){let best;for(let i=0;i<20;i++){const a=Math.random()*Math.PI*2,r=650+Math.random()*200;let x=clamp(Math.round((car.x+Math.cos(a)*r)/GRID)*GRID,30,WORLD-30),y=clamp(car.y+Math.sin(a)*r,30,WORLD-30);if(Math.hypot(x-car.x,y-car.y)>450){best={x,y,a:0,v:0,hp:100};break}}if(best)cops.push(best)}
+function update(dt){if(!active||paused)return;let accel=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0);const boost=(keys.has('ShiftLeft')||keys.has('ShiftRight'))&&car.nitro>0&&accel>0;car.nitro=clamp(car.nitro+(boost?-30:12)*dt,0,100);car.v+=accel*(boost?360:210)*dt;car.v*=Math.exp(-(accel?.23:.9)*dt);if(keys.has('Space'))car.v*=Math.exp(-4*dt);car.v=clamp(car.v,-115,boost?520:350);const steer=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);car.a+=steer*2.5*clamp(car.v/130,-1,1)*dt;move(car,dt);distance+=Math.abs(car.v)*dt/10000;
+if(Math.abs(car.v)>185)heat=clamp(heat+dt*.1,0,5);let level=Math.ceil(heat);if(level){spawn-=dt;if(spawn<=0&&cops.length<Math.min(7,level+1)){addCop();spawn=4}let nearest=Infinity;for(const cop of cops){const d=Math.hypot(car.x-cop.x,car.y-cop.y);nearest=Math.min(nearest,d);let tx=car.x,ty=car.y;const roadX=Math.round(cop.x/GRID)*GRID,roadY=Math.round(cop.y/GRID)*GRID;
+// Follow street intersections until there is a clear route to the player.
+if(d>170){if(Math.abs(cop.x-roadX)<30){tx=roadX;ty=Math.round(car.y/GRID)*GRID;if(Math.abs(cop.y-ty)<32){tx=Math.round(car.x/GRID)*GRID}}else{ty=roadY;tx=Math.round(car.x/GRID)*GRID;if(Math.abs(cop.x-tx)<32)ty=Math.round(car.y/GRID)*GRID}}
+const target=Math.atan2(ty-cop.y,tx-cop.x),diff=Math.atan2(Math.sin(target-cop.a),Math.cos(target-cop.a));cop.a+=clamp(diff,-2.9*dt,2.9*dt);cop.v+=(Math.abs(diff)>1?100:265+level*16)-cop.v>0?100*dt:-180*dt;cop.v=clamp(cop.v,0,330);if(move(cop,dt))cop.a+=1.2;if(d<35){car.hp-=dt*12;car.v*=Math.exp(-dt*1.8);cop.v*=.8} }
+if(nearest>620){escapeTime+=dt;if(escapeTime>10){wins++;heat=0;cops=[];escapeTime=0;car.hp=Math.min(100,car.hp+25);toast('ZGUBIONO POŚCIG · +25 stanu auta')}}else{escapeTime=Math.max(0,escapeTime-dt*2);heat=clamp(heat+dt*.018,0,5)}}
+if(car.hp<=0){active=false;clearInput();$('controls').hidden=true;$('overlay').style.display='flex';document.querySelector('.panel h1').innerHTML='Koniec jazdy.<br><em>Spróbuj ponownie.</em>';document.querySelector('.panel>p').textContent=`Przejechany dystans: ${distance.toFixed(2)} km. Udane ucieczki: ${wins}.`;$('start').textContent='NOWA JAZDA →';$('start').focus({preventScroll:true})}
+}
+function drawCar(c,police=false){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.a);ctx.fillStyle='#0007';ctx.fillRect(-19,-10,42,24);ctx.fillStyle=police?'#e6e9e8':'#d9ff57';ctx.fillRect(-20,-10,40,20);ctx.fillStyle='#0c1d29';ctx.fillRect(-7,-8,16,16);ctx.fillStyle=police?'#1a252e':'#a7c23c';ctx.fillRect(-16,-8,7,16);ctx.fillStyle='#f8ffce';ctx.fillRect(17,-9,4,5);ctx.fillRect(17,4,4,5);ctx.fillStyle='#ff4343';ctx.fillRect(-21,-9,3,5);ctx.fillRect(-21,4,3,5);if(police){ctx.fillStyle=Math.sin(performance.now()/100)>0?'#ff334b':'#42a8ff';ctx.fillRect(-2,-11,5,22)}ctx.restore()}
+function render(){ctx.fillStyle='#142329';ctx.fillRect(0,0,w,h);ctx.save();const zoom=.85;ctx.translate(w/2,h/2);ctx.scale(zoom,zoom);ctx.translate(-car.x,-car.y);ctx.fillStyle='#1c2a30';ctx.fillRect(0,0,WORLD,WORLD);ctx.lineCap='butt';for(let i=0;i<=WORLD;i+=GRID){ctx.strokeStyle='#35434a';ctx.lineWidth=ROAD+12;ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,WORLD);ctx.moveTo(0,i);ctx.lineTo(WORLD,i);ctx.stroke();ctx.strokeStyle='#202b32';ctx.lineWidth=ROAD;ctx.stroke();ctx.strokeStyle='#71816c66';ctx.lineWidth=2;ctx.setLineDash([18,25]);ctx.stroke();ctx.setLineDash([])}for(const b of buildings){if(Math.abs(b.x-car.x)>w/zoom/2+200||Math.abs(b.y-car.y)>h/zoom/2+200)continue;ctx.fillStyle=b.park?'#233c33':'#101c2490';ctx.fillRect(b.x+7,b.y+9,b.w,b.h);ctx.fillStyle=b.park?'#284438':b.color;ctx.fillRect(b.x,b.y,b.w,b.h);if(b.park){ctx.fillStyle='#365b44';for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(b.x+25+i%2*65,b.y+28+Math.floor(i/2)*65,16,0,7);ctx.fill()}}else{ctx.strokeStyle='#ffffff0c';ctx.strokeRect(b.x+7,b.y+7,b.w-14,b.h-14);ctx.fillStyle='#a9c09620';for(let i=15;i<b.w-10;i+=25)ctx.fillRect(b.x+i,b.y+10,9,3)}}for(const c of cops)drawCar(c,true);drawCar(car);ctx.restore();
+const size=Math.min(160,w*.22),mx=w-size-32,my=105;ctx.fillStyle='#0b171ee8';ctx.fillRect(mx-8,my-8,size+16,size+16);ctx.save();ctx.beginPath();ctx.rect(mx,my,size,size);ctx.clip();ctx.fillStyle='#27383d';ctx.fillRect(mx,my,size,size);ctx.strokeStyle='#647276';ctx.lineWidth=2;for(let i=0;i<=WORLD;i+=GRID){ctx.beginPath();ctx.moveTo(mx+i/WORLD*size,my);ctx.lineTo(mx+i/WORLD*size,my+size);ctx.moveTo(mx,my+i/WORLD*size);ctx.lineTo(mx+size,my+i/WORLD*size);ctx.stroke()}for(const c of [...cops,car]){ctx.fillStyle=c===car?'#d9ff57':'#ff5165';ctx.beginPath();ctx.arc(mx+c.x/WORLD*size,my+c.y/WORLD*size,c===car?4:3,0,7);ctx.fill()}ctx.restore();ctx.fillStyle='#a6b6b9';ctx.font='9px Arial';ctx.fillText('MIASTO / RADAR',mx,my+size+23);
+$('speed').textContent=Math.round(Math.abs(car.v)*.48);$('nitro').style.width=car.nitro+'%';$('health').style.width=Math.max(0,car.hp)+'%';$('health').style.background=car.hp<30?'#ff5165':'#d9ff57';$('distance').textContent=distance.toFixed(2)+' km';$('wins').textContent=wins;const level=Math.ceil(heat);$('stars').textContent='★'.repeat(level)+'☆'.repeat(5-level);$('status').textContent=level?(escapeTime>0?'Znikasz z radaru…':'Policja jest na twoim tropie'):'Miasto należy do ciebie';$('escape').style.width=escapeTime*10+'%';if(paused){ctx.fillStyle='#09121bb0';ctx.fillRect(0,h/2-40,w,80);ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 26px Arial';ctx.fillText('PAUZA · P, aby wrócić',w/2,h/2+9);ctx.textAlign='left'}}
+function frame(t){let dt=Math.min((t-last)/1000,.04);last=t;update(dt);render();requestAnimationFrame(frame)}requestAnimationFrame(frame);
+</script></body></html>
